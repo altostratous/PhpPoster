@@ -27,4 +27,8 @@ if (file_exists("title.txt") && file_exists("body.txt")) {
         // put the new post hash for further check
         file_put_contents("hash", md5($title.$body));
     }
+    else
+    {
+        echo "Post already uploaded.";
+    }
 }
