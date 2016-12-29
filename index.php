@@ -18,12 +18,13 @@ if (file_exists("title.txt") && file_exists("body.txt")) {
             // we won't post
             $doPost = false;
     }
+    $doPost =true;
     // if the post flag is set
     if ($doPost) {
         // create client
         $webClient = new PersianBlogClient("phpposter", "phpposter");
         // post to the blog
-        $webClient->post('946656', $title, $body);
+        $webClient->send_post($title, $body, '946656');
         // put the new post hash for further check
         file_put_contents("hash", md5($title.$body));
     }
