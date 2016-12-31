@@ -2,6 +2,7 @@
 
 // include the Class
 require_once('PersianBlogClient.php');
+require_once('BlogfaBlogClient.php');
 
 // if both title and body files exist
 if (file_exists("title.txt") && file_exists("body.txt")) {
@@ -22,9 +23,11 @@ if (file_exists("title.txt") && file_exists("body.txt")) {
     // if the post flag is set
     if ($doPost) {
         // create client
-        $webClient = new PersianBlogClient("phpposter", "phpposter");
+        // $persianBlogWebClient = new PersianBlogClient("phpposter", "phpposter");
+        $blogfaBlogClient = new BlogfaBlogClient('week','poorpoor');
         // post to the blog
-        $webClient->send_post($title, $body, '946656');
+        // $persianBlogWebClient->send_post($title, $body, '946656');
+        $blogfaBlogClient->send_post($title,$body);
         // put the new post hash for further check
         file_put_contents("hash", md5($title.$body));
     }

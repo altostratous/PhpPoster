@@ -52,36 +52,36 @@ abstract class BlogClient
 
     /**
      * @param $post_data
+     * @param $data_sample mixed data sample
      * @internal param The $title title for the post
      * @internal param The $body body
      * @internal param The $blogID blog ID, you can find it in the url while posting to a blog
      */
-    protected function post($post_data){
+    protected function post($post_data, $data_sample){
         // get post url
         $post_url = $this->get_post_url();
         // get the page containing form
         $html = $this->grab_page($post_url);
+        echo $html;
         // load the document to get inputs
         $document = new DOMDocument();
         @$document->loadHTML($html);
         // get all input tags
         $inputs = $document->getElementsByTagName("input");
-        // data to post, so far given data
-        $data = '';
-        $added_fields = array();
-        foreach ($post_data as $key => $value){
-            $data .= $key.'='.urlencode($value).'&';
-            array_push($added_fields, $key);
-        }
         // foreach hidden input tag
         foreach ($inputs as $input){
-            // it it is not username or password
-            if (!in_array($input->getAttribute("name"), $added_fields))
-                // add the tag value to data
-                $data .= $input->getAttribute("name").'='.urlencode($input->getAttribute("value")).'&';
+            if ($input->hasAttribute('value'))
+                $post_data[$input->getAttribute("name")] = $input->getAttribute("value");
         }
+        // data to post
+        $data = $data_sample;
+        print_r($post_data);
+        foreach ($post_data as $key => $value){
+            $data = preg_replace('/'.$key.'=[^&]*/u', $key.'='.urlencode($value), $data);
+        }
+        echo $data;
         // post the data to the blog
-        $this->post_data($post_url, $data);
+        echo '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>'.$this->post_data($post_url, $data).'</html>';
     }
 
     /**
