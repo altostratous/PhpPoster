@@ -3,6 +3,8 @@
 // include the Class
 require_once('PersianBlogClient.php');
 require_once('BlogfaBlogClient.php');
+require_once('BlogskyBlogClient.php');
+require_once ('BayanBlogClient.php');
 
 // if both title and body files exist
 if (file_exists("title.txt") && file_exists("body.txt")) {
@@ -24,10 +26,14 @@ if (file_exists("title.txt") && file_exists("body.txt")) {
     if ($doPost) {
         // create client
         // $persianBlogWebClient = new PersianBlogClient("phpposter", "phpposter");
-        $blogfaBlogClient = new BlogfaBlogClient('week','poorpoor');
+        // $blogfaBlogClient = new BlogfaBlogClient('week','poorpoor');
+        // $blogskyBlogClient = new BlogskyBlogClient('mostazafin', 'poorpoor');
+        $bayanBlogClient = new BayanBlogClient('poorpoor', 'poorpoor');
         // post to the blog
         // $persianBlogWebClient->send_post($title, $body, '946656');
-        $blogfaBlogClient->send_post($title,$body);
+        // $blogfaBlogClient->send_post($title,$body);
+        // $blogskyBlogClient->send_post($title, $body, 'mostaz');
+        $bayanBlogClient->send_post($title, $body, 'mostz');
         // put the new post hash for further check
         file_put_contents("hash", md5($title.$body));
     }

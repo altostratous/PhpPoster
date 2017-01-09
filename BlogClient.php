@@ -57,7 +57,7 @@ abstract class BlogClient
      * @internal param The $body body
      * @internal param The $blogID blog ID, you can find it in the url while posting to a blog
      */
-    protected function post($post_data, $data_sample){
+    protected function post($post_data, $data_sample = ''){
         // get post url
         $post_url = $this->get_post_url();
         // get the page containing form
