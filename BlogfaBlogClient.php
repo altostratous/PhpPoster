@@ -61,4 +61,23 @@ class BlogfaBlogClient extends BlogClient
         $last_url = 'http://www.blogfa.com/Desktop/'.$document->getElementsByTagName('a')->item(0)->getAttribute('href');
         return $last_url;
     }
+
+    /**
+     * @param $title
+     * @param $content
+     * @param $blogID
+     * @return mixed
+     */
+    public function post($title, $content, $blogID)
+    {
+        // TODO: Implement post() method.
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function get_background_params()
+    {
+        // TODO: Implement get_background_params() method.
+    }
 }

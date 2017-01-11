@@ -44,4 +44,23 @@ class BlogskyBlogClient extends BlogClient
     {
         return "http://www.blogsky.com/$this->blog_tag/post/new";
     }
+
+    /**
+     * @param $title
+     * @param $content
+     * @param $blogID
+     * @return mixed
+     */
+    public function post($title, $content, $blogID)
+    {
+        // TODO: Implement post() method.
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function get_background_params()
+    {
+        // TODO: Implement get_background_params() method.
+    }
 }
