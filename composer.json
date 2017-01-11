@@ -1,0 +1,15 @@
+{
+  "name": "altostratous/phpposter",
+  "description": "Using this package you can easily post on iranian blogging systems.",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Ali Asgari",
+      "email": "altostratous@gmail.com"
+    }
+  ],
+  "require": {
+    "facebook/webdriver": "1.2.0"
+  }
+}
