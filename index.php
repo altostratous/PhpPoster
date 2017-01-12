@@ -1,6 +1,12 @@
 <?php
-// include the Class
 require_once('BlogfaBlogClient.php');
+require_once ('Configuration.php');
+
+// check selenium server
+if (!Configuration::is_selenium_running()){
+    echo 'Selenium server not running. \r\n <br>';
+    die();
+}
 
 // if both title and body files exist
 if (file_exists("title.txt") && file_exists("body.txt")) {
@@ -17,22 +23,14 @@ if (file_exists("title.txt") && file_exists("body.txt")) {
             // we won't post
             $doPost = false;
     }
-    echo 'every';
+
     $doPost =true;
     // if the post flag is set
     if ($doPost) {
         // create client
-        // $persianBlogWebClient = new PersianBlogClient("phpposter", "phpposter");
-        $blogfaBlogClient = new BlogfaBlogClient('week','poorpoor');
-        // $blogskyBlogClient = new BlogskyBlogClient('mostazafin', 'poorpoor');
-        // $bayanBlogClient = new BayanBlogClient('poorpoor', 'poorpoor');
-        // post to the blog
-        // $persianBlogWebClient->send_post($title, $body, '946656');
-        echo $blogfaBlogClient->send_post($title,$body);
-        echo 'I\'m here';
-        // $blogskyBlogClient->send_post($title, $body, 'mostaz');
-        // $bayanBlogClient->post($title, $body, 'mostz');
-        // put the new post hash for further check
+        $blogClient = new BlogfaBlogClient('week','poorpoor');
+        // send post
+        $blogClient->send_post($title,$body);
         file_put_contents("hash", md5($title.$body));
     }
     else
