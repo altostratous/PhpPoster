@@ -1,12 +1,12 @@
 <?php
-require_once 'BlogClient.php';
+require_once 'SeleniumBlogClient.php';
 /**
  * Created by PhpStorm.
  * User: alto
  * Date: 1/12/17
  * Time: 3:25 PM
  */
-class BlogfaBlogClient extends BlogClient
+class BlogfaSeleniumBlogClient extends SeleniumBlogClient
 {
     public function __construct($username, $password, $blog_tag = null)
     {

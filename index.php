@@ -3,6 +3,7 @@ require_once ('PersianblogBlogClient.php');
 require_once ('BlogfaBlogClient.php');
 require_once ('BayanBlogClient.php');
 require_once ('Configuration.php');
+require_once ('PishroblogBlogClient.php');
 
 // check selenium server
 if (!Configuration::is_selenium_running()){
@@ -32,7 +33,8 @@ if (file_exists("title.txt") && file_exists("body.txt")) {
         // create client
         // $blogClient = new BlogfaBlogClient('week', 'poorpoor');
         // $blogClient = new PersianblogBlogClient('phpposter', 'phpposter', '946656');
-        $blogClient = new BayanBlogClient('poorpoor', 'poorpoor', 'mostz');
+        // $blogClient = new BayanBlogClient('poorpoor', 'poorpoor', 'mostz');
+        $blogClient = new PishroblogBlogClient('alto', 'poorpoor');
         // send post
         $blogClient->send_post($title, $body);
         file_put_contents("hash", md5($title.$body));

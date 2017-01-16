@@ -6,7 +6,7 @@ require_once 'BlogClient.php';
  * Date: 1/12/17
  * Time: 3:25 PM
  */
-class BayanBlogClient extends BlogClient
+class BayanSeleniumBlogClient extends SeleniumBlogClient
 {
     public function __construct($username, $password, $blog_tag = null)
     {

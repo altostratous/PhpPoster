@@ -6,7 +6,7 @@ include_once 'CurlBlogClient.php';
  * Date: 12/11/2016
  * Time: 11:37 PM
  */
-class PersianBlogClient extends CurlBlogClient
+class PishroblogBlogClient extends CurlBlogClient
 {
     /**
      * PersianBlogClient constructor.
@@ -17,9 +17,9 @@ class PersianBlogClient extends CurlBlogClient
     public function __construct($username, $password, $blog_tag = null)
     {
         parent::__construct(array(
-            'TxtPassword' => $password,
-            'TxtUsername' => $username
-        ), "http://persianblog.ir/Login.aspx?ReturnUrl=%2fHome.aspx", null);
+            'username' => $username,
+            'password' => $password,
+        ), "http://pishroblog.ir/Login", null);
     }
     /**
      * @param null $blog_tag The blog ID, you can find it in the url while posting to a blog
@@ -28,17 +28,13 @@ class PersianBlogClient extends CurlBlogClient
      */
     public function send_post($title, $body, $blog_tag = null){
         $this->blog_tag = $blog_tag;
-        parent::post(array('TxtTitle' => $title, 'intrContent' => $body));
+        parent::post(array('mtitle' => $title, 'mtex' => $body));
     }
     /**
      * @return mixed returns url to post to weblog
      */
     protected function get_post_url()
     {
-        // try to load posting page
-        $ch = $this->grab_page_handle("http://persianblog.ir/CreatePost.aspx?blogID=$this->blog_tag");
-        // get the redirected url containing the 'h' parameter
-        $last_url = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
-        return $last_url;
+        return 'http://pishroblog.ir/Panel/npost6.php';
     }
 }
