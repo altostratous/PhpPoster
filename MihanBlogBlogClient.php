@@ -14,11 +14,12 @@ class MihanBlogBlogClient extends CurlBlogClient
      * @param $password The password for persian blog account
      * @param null $blog_tag Blog specifier
      */
-    public function __construct($username, $password, $blog_tag = null)
+    public function __construct($username, $password, $blog_tag)
     {
         parent::__construct(array(
             'data[userpass]' => $password,
-            'data[username]' => $username
+            'data[username]' => $username,
+            'data[address]' => $blog_tag
         ), $this->get_login_url(), null);
     }
     /**
@@ -28,7 +29,8 @@ class MihanBlogBlogClient extends CurlBlogClient
      */
     public function send_post($title, $body, $blog_tag = null){
         $this->blog_tag = $blog_tag;
-        parent::post(array('TxtTitle' => $title, 'intrContent' => $body));
+        // sleep(10);
+        parent::post(array('data[title]' => $title, 'data[content1_html]' => $body), 'data%5Bcomment_status%5D=open&data%5Bcomment_close_status%5D=unlimited');
     }
     /**
      * @return mixed returns url to post to weblog
@@ -41,10 +43,6 @@ class MihanBlogBlogClient extends CurlBlogClient
     private function get_login_url()
     {
         $html = $this->grab_page('http://mihanblog.com/web/signin');
-        $document = new DOMDocument();
-        @$document->loadHTML($html);
-        $url = $document->getElementsByTagName('form')[0]->getAttribute('action');
-        echo $url;
-        return $url;
+        return $this->get_form_action($html);
     }
 }

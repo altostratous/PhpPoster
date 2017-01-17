@@ -7,10 +7,10 @@ require_once ('PishroblogBlogClient.php');
 require_once ('MihanBlogBlogClient.php');
 
 // check selenium server
-if (!Configuration::is_selenium_running()){
-    echo 'Selenium server not running. \r\n <br>';
-    die();
-}
+//if (!Configuration::is_selenium_running()){
+//    echo 'Selenium server not running. \r\n <br>';
+//    die();
+//}
 
 // if both title and body files exist
 if (file_exists("title.txt") && file_exists("body.txt")) {
@@ -36,9 +36,9 @@ if (file_exists("title.txt") && file_exists("body.txt")) {
         // $blogClient = new PersianblogBlogClient('phpposter', 'phpposter', '946656');
         // $blogClient = new BayanBlogClient('poorpoor', 'poorpoor', 'mostz');
         // $blogClient = new PishroblogBlogClient('alto', 'poorpoor');
-        $blogClient = new MihanBlogBlogClient('phpposter', 'phpposter');
+        $blogClient = new MihanBlogBlogClient('phpposter', 'phpposter', 'phpposter');
         // send post
-        // $blogClient->send_post($title, $body);
+        $blogClient->send_post($title, $body);
         file_put_contents("hash", md5($title.$body));
     }
     else

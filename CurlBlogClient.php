@@ -33,7 +33,7 @@ abstract class CurlBlogClient implements BlogClient
         $data = '';
         $added_fields = array();
         foreach ($login_data as $key => $value){
-            $data .= $key.'='.urlencode($value).'&';
+            $data .= urlencode($key).'='.urlencode($value).'&';
             array_push($added_fields, $key);
         }
         // foreach hidden input tag
@@ -41,46 +41,50 @@ abstract class CurlBlogClient implements BlogClient
             // it it is not username or password
             if (!in_array($input->getAttribute("name"), $added_fields))
                 // add the tag value to data
-                $data .= $input->getAttribute("name").'='.urlencode($input->getAttribute("value")).'&';
+                $data .= urlencode($input->getAttribute("name")).'='.urlencode($input->getAttribute("value")).'&';
         }
-        $data;
         // request login
         $this->login($login_url, $data);
     }
     protected abstract function get_post_url();
+
     /**
      * @param $post_data
-     * @internal param The $title title for the post
-     * @internal param The $body body
-     * @internal param The $blogID blog ID, you can find it in the url while posting to a blog
+     * @param $background_data
      */
-    protected function post($post_data){
+    protected function post($post_data, $background_data = null){
+        if ($background_data != null){
+            $background_data_array = array();
+            parse_str($background_data, $background_data_array);
+            array_merge($post_data, $background_data_array);
+        }
         // get post url
         $post_url = $this->get_post_url();
         // get the page containing form
         $html = $this->grab_page($post_url);
+        // get action url
+        $action = $this->get_form_action($html);
         // load the document to get inputs
         $document = new DOMDocument();
         @$document->loadHTML($html);
         // get all input tags
         $inputs = $document->getElementsByTagName("input");
-        // data to post, so far given data
-        $data = '';
-        $added_fields = array();
-        foreach ($post_data as $key => $value){
-            $data .= $key.'='.urlencode($value).'&';
-            array_push($added_fields, $key);
-        }
+
         // foreach hidden input tag
         foreach ($inputs as $input){
-            // it it is not username or password
-            if (!in_array($input->getAttribute("name"), $added_fields))
-                // add the tag value to data
-                $data .= $input->getAttribute("name").'='.urlencode($input->getAttribute("value")).'&';
+            // add the tag value to data
+            if (!isset($post_data[$input->getAttribute("name")])){
+                $post_data[$input->getAttribute("name")] = $input->getAttribute("value");
+            }
         }
-        // post the data to the blog
+        // data to post, so far given data
+        $data = '';
+        foreach ($post_data as $key => $value){
+            $data .= urlencode($key).'='.urlencode($value).'&';
+        }
         echo $data;
-        echo $this->post_data($post_url, $data);
+        // post the data to the blog
+        echo $this->post_data($action, $data);
     }
     /**
      * Logs in to the site and saves cookie.txt
@@ -99,7 +103,7 @@ abstract class CurlBlogClient implements BlogClient
         curl_setopt($login, CURLOPT_TIMEOUT, 40000);
         curl_setopt($login, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($login, CURLOPT_URL, $url);
-        curl_setopt($login, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 5.2; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 SeaMonkey/2.7.1');
+        curl_setopt($login, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0');
         curl_setopt($login, CURLOPT_FOLLOWLOCATION, TRUE);
         curl_setopt($login, CURLOPT_POST, TRUE);
         curl_setopt($login, CURLOPT_POSTFIELDS, $data);
@@ -119,7 +123,7 @@ abstract class CurlBlogClient implements BlogClient
     function grab_page($site){
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 5.2; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 SeaMonkey/2.7.1');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0');
         curl_setopt($ch, CURLOPT_TIMEOUT, 40);
         curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie.txt");
         curl_setopt($ch, CURLOPT_URL, $site);
@@ -138,7 +142,7 @@ abstract class CurlBlogClient implements BlogClient
     function grab_page_handle($site){
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 5.2; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 SeaMonkey/2.7.1');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0');
         curl_setopt($ch, CURLOPT_TIMEOUT, 40);
         curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie.txt");
         curl_setopt($ch, CURLOPT_URL, $site);
@@ -164,7 +168,7 @@ abstract class CurlBlogClient implements BlogClient
         curl_setopt($data_post, CURLOPT_TIMEOUT, 40000);
         curl_setopt($data_post, CURLOPT_HEADER, TRUE);
         curl_setopt($data_post, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($data_post, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 5.2; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 SeaMonkey/2.7.1');
+        curl_setopt($data_post, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0');
         curl_setopt($data_post, CURLOPT_POST, TRUE);
         curl_setopt($data_post, CURLOPT_POSTFIELDS, $data);
         curl_setopt($data_post, CURLOPT_COOKIEFILE, "cookie.txt");
@@ -173,5 +177,14 @@ abstract class CurlBlogClient implements BlogClient
         ob_end_clean();
         curl_close ($data_post);
         unset($data_post);
+    }
+
+
+    protected function get_form_action($html){
+        echo $html;
+        $document = new DOMDocument();
+        @$document->loadHTML($html);
+        $url = $document->getElementsByTagName('form')->item(0)->getAttribute('action');
+        return $url;
     }
 }
