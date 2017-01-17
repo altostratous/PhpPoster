@@ -44,7 +44,7 @@ abstract class CurlBlogClient implements BlogClient
                 $data .= urlencode($input->getAttribute("name")).'='.urlencode($input->getAttribute("value")).'&';
         }
         // request login
-        echo $this->login($login_url, $data);
+        $this->login($login_url, $data);
     }
     protected abstract function get_post_url();
 
@@ -82,7 +82,6 @@ abstract class CurlBlogClient implements BlogClient
         foreach ($post_data as $key => $value){
             $data .= urlencode($key).'='.urlencode($value).'&';
         }
-        echo $data;
         // post the data to the blog
         echo $this->post_data($action, $data);
     }
@@ -181,7 +180,6 @@ abstract class CurlBlogClient implements BlogClient
 
 
     protected function get_form_action($html){
-        echo $html;
         $document = new DOMDocument();
         @$document->loadHTML($html);
         $url = $document->getElementsByTagName('form')->item(0)->getAttribute('action');

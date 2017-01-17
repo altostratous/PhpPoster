@@ -27,7 +27,8 @@ class PishroblogBlogClient extends CurlBlogClient
      * @param $body The body
      */
     public function send_post($title, $body, $blog_tag = null){
-        $this->blog_tag = $blog_tag;
+        if ($blog_tag != null)
+            $this->blog_tag = $blog_tag;
         parent::post(array('mtitle' => $title, 'mtex' => $body));
     }
     /**
@@ -37,4 +38,11 @@ class PishroblogBlogClient extends CurlBlogClient
     {
         return 'http://pishroblog.ir/Panel/npost6.php';
     }
+
+    protected function get_form_action($html)
+    {
+        return $this->get_post_url();
+    }
+
+
 }
