@@ -44,7 +44,7 @@ abstract class CurlBlogClient implements BlogClient
                 $data .= urlencode($input->getAttribute("name")).'='.urlencode($input->getAttribute("value")).'&';
         }
         // request login
-        $this->login($login_url, $data);
+        echo $this->login($login_url, $data);
     }
     protected abstract function get_post_url();
 
