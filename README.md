@@ -1,18 +1,22 @@
 # PhpPoster
-This project is done to enable posting to persianblog.ir using php server side application.
-php_curl is used to perform requests.
+This project is done to enable posting to some iranian blogging systems using php server side application.
+It is based on php_curl, Facebook php-webdriver. 
 
 ## Documentation
 There you will find full inline documentation for the code.
 
 ## Requirements
-This project is done using php_curl so it should be installed on the production server.
 
+    php_curl
+    facebook/php-webdriver
+        - selenium web driver
+    geckodriver
+    
 ## Usage
 It is really simple:
 
     <?php
     
     require_once('PersianBlogClient.php');
-    $webClient = new PersianBlogClient("[blog username]", "[blog pasword]");
-    $webClient->post('[blog ID, it can be found in the url when posting to a blog on persian blog]', "the title", "the body");
+    $blogClient = new ParsiblogBlogClient("[blog username]", "[blog pasword]", [optional blog tag]);
+    $blogClient->post("the title", "the body", [optional blog tag, blog specifier]);
